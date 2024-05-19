@@ -27,7 +27,8 @@
         .container {
             width: 50%;
             padding: 20px;
-            background-color: darkgray;
+            background-color: transparent;
+            border: 2px solid white;
             border-radius: 20px;
             text-align: center;
         }
@@ -52,17 +53,20 @@
         }
 
         .status-bar {
-            width: 50%;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
             height: 20px;
-            background-color: darkgreen;
+            background-color: transparent;
+            border: 1px solid white;
             border-radius: 5px;
-            margin: 0 10px;
+            overflow: hidden;
         }
 
         .status-bar div {
-            width: 100%;
+            width: calc(10% - 1px);
             background-color: lightgreen;
-            border-radius: 5px;
+            border-radius: 0;
             animation: loading 1.5s infinite ease-in-out;
         }
 
@@ -95,11 +99,20 @@
         <div class="servers-title">Servers</div>
         <div class="status-container">
             <div class="percentage" id="percentage">95.00%</div>
+            <div class="status-bar" id="status-bar">
+                <div class="status-bar-segment"></div>
+                <div class="status-bar-segment"></div>
+                <div class="status-bar-segment"></div>
+                <div class="status-bar-segment"></div>
+                <div class="status-bar-segment"></div>
+                <div class="status-bar-segment"></div>
+                <div class="status-bar-segment"></div>
+                <div class="status-bar-segment"></div>
+                <div class="status-bar-segment"></div>
+                <div class="status-bar-segment"></div>
+            </div>
             <div class="status-circle"></div>
             <div class="status-text">Online</div>
-            <div class="status-bar">
-                <div id="status-bar-fill"></div>
-            </div>
         </div>
     </div>
 
@@ -111,13 +124,22 @@
         function updateStatus() {
             const percentage = getRandomPercentage();
             const percentageElement = document.getElementById('percentage');
-            const statusBarFill = document.getElementById('status-bar-fill');
+            const statusBarSegments = document.querySelectorAll('.status-bar-segment');
 
             percentageElement.textContent = percentage + '%';
-            statusBarFill.style.width = percentage + '%';
+
+            // Update status bar segments
+            const filledSegments = Math.round(parseFloat(percentage) / 10);
+            statusBarSegments.forEach((segment, index) => {
+                if (index < filledSegments) {
+                    segment.style.backgroundColor = 'lightgreen';
+                } else {
+                    segment.style.backgroundColor = 'transparent';
+                }
+            });
         }
 
-        setInterval(updateStatus, 15000);
+        setInterval(updateStatus, 5000);
         updateStatus();
     </script>
 </body>
